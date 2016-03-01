@@ -1,13 +1,32 @@
-if node['core_security']['firewall']['type'] == 'iptables'
-  include_recipe 'firewall'
-  ChefCore::Output.action 'Adding Firewall Rules...'
+# enable platform default firewall
+# ChefCore::Output.action 'Running Firewall Cookbook Default Setup'
+log 'ACTION: Running Firewall Cookbook Default Setup' do
+  message 'ACTION: Running Firewall Cookbook Default Setup'
+  level :info
+end
+firewall 'default' do
+  action :install
+end
 
+if node['core_security']['firewall']['type'] == 'iptables'
+  # include_recipe 'firewall'
+  ChefCore::Output.action 'Adding Firewall Rules'
+
+  # unless node['core_security']['firewall']['rules'].empty?
+  #   node['core_security']['firewall']['rules'].each do |rule, values|
+  #     firewall_rule rule do
+  #       port { values[:port] unless values[:port].nil? }
+  #       interface { values[:interface] unless values[:interface].nil? }
+  #       stateful { values[:stateful] unless values[:stateful].nil? }
+  #       protocol { values[:protocol].to_s }
+  #       command { values[:command].to_s }
+  #     end
+  #   end
+  # end
   unless node['core_security']['firewall']['rules'].empty?
-    node['core_security']['firewall']['rules'].each do |rule, values|
+    node['core_security']['firewall']['rules'].each do |rule, raw_parameters|
       firewall_rule rule do
-        port values[:port]
-        protocol values[:protocol].to_s
-        action values[:action].to_s
+        raw raw_parameters
       end
     end
   end

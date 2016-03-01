@@ -1,7 +1,10 @@
 AllCops:
   Exclude:
     - 'berks-cookbooks/**/*'
-    - '.kitchen/*'
+    - '.kitchen/**/*'
+    - 'spec/**/*'
+    - '.idea/**/*'
+    - '.git/**/*'
     - 'Thorfile'
     - 'Berksfile'
     - 'Vagrantfile'
@@ -36,9 +39,6 @@ AlignParameters:
 
 Encoding:
   Enabled: false
-
-HashSyntax:
-  EnforcedStyle: hash_rockets
 
 Documentation:
   Enabled: false
